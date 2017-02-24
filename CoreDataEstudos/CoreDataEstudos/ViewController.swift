@@ -21,7 +21,7 @@ class ViewController: UIViewController {
         
         
         
-        /*
+        /* Salvar item
          let produto = NSEntityDescription.insertNewObject(forEntityName: "Produto", into: context)
          
          produto.setValue("PlayStation 4", forKey: "nome")
@@ -36,46 +36,7 @@ class ViewController: UIViewController {
          print("nao salvou o role")
          }
          
-         
-         
-         
-         
-         
-         let usuario = NSEntityDescription.insertNewObject(forEntityName: "Usuario", into: context)
-         
-         usuario.setValue("felipemauani", forKey: "loginUsuario")
-         usuario.setValue("senha123", forKey: "senha")
-         usuario.setValue("Felipe Manhani", forKey: "nome")
-         usuario.setValue(40, forKey: "idade")
-         
-         do {
-         try context.save()
-         print("dados salvos")
-         }catch{
-         print("error ao salvar dados")
-         }
-         
-         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Usuario")
-         
-         do{
-         let usuarios = try  context.fetch(request)
-         
-         if usuarios.count > 0{
-         
-         for usuario in usuarios {
-         
-         if let nomeUsuario = (usuario as AnyObject).value(forKey: "nome") {
-         print(nomeUsuario)
-         }
-         }
-         }else {
-         print("nenhum usuario")
-         }
-         
-         }catch{
-         print("error ao recuperar os dados")
-         }
-         */
+        */
         
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Produto")
         
@@ -88,7 +49,7 @@ class ViewController: UIViewController {
         
         
         //Aplicar filtros
-        let predicate = NSPredicate(format: "nome = %@", "Super Nintendo")
+        //let predicate = NSPredicate(format: "nome = %@", "Super Nintendo")
         
         //Sem case sensitve
         //let predicate = NSPredicate(format: "nome contains %@", "super")
@@ -100,46 +61,54 @@ class ViewController: UIViewController {
         //let predicate = NSPredicate(format: "nome beginswith [c] %@", "super")
         
         //Comparar
-        //let predicate = NSPredicate(format: "preco > %@", "300")
+        let predicate = NSPredicate(format: "preco > %@", "1420")
         
         
-        let filtroNome = NSPredicate(format: "nome contains [c] %@", "super")
-        let filtroPreco = NSPredicate(format: "preco > %@", "300")
+        //Multiplus predicate
+        //let filtroNome = NSPredicate(format: "nome contains [c] %@", "super")
+        //let filtroPreco = NSPredicate(format: "preco > %@", "300")
         
         //AND
         //let combinacaoFiltros = NSCompoundPredicate(andPredicateWithSubpredicates: [filtroNome, filtroPreco])
         
         
         //OR
-        let combinacaoFiltros = NSCompoundPredicate(orPredicateWithSubpredicates: [filtroNome, filtroPreco])
+        //let combinacaoFiltros = NSCompoundPredicate(orPredicateWithSubpredicates: [filtroNome, filtroPreco])
 
-        
-        
         //Passa um array de filtros
         request.sortDescriptors = [orderAZ]
+        
         request.predicate = predicate
+        
+        //Recuperando item
         do{
             let produtos = try context.fetch(request)
             
             if produtos.count > 0 {
                 
-                for produto in produtos {
+                for produto in produtos as! [NSManagedObject]{
                     
                     let nomeProduto = (produto as AnyObject).value(forKey: "nome")
                     let precoProduto = (produto as AnyObject).value(forKey: "preco")
                     
                     print("Nome: " + String(describing: nomeProduto) + "Preco: " + String(describing: precoProduto))
                     
+                    //Deletar
+                    //context.delete(produto)
+                    
                     //Atualizar dados
                    /* (produto as AnyObject).setValue(300.00, forKey: "preco")
                     (produto as AnyObject).setValue("Super Nintendo", forKey: "nome")
-                    do{
-                        try context.save()
-                        print("sucesso ao atualizar dados")
-                    }catch{
-                        print("nao atualizou")
-                    }*/
-                    //fim atualizar dados
+                    */
+                    
+                    //Context.save() utilizado criar, atualizar e deletar
+//                    do{
+//                        try context.save()
+//                        print("sucesso ao remover dados")
+//                    }catch{
+//                        print("nao removeu")
+//                    }
+                    
                 }
             }else {
                 print("nenhum item encontrado")
@@ -157,4 +126,41 @@ class ViewController: UIViewController {
     
     
 }
+
+/*
+let usuario = NSEntityDescription.insertNewObject(forEntityName: "Usuario", into: context)
+
+usuario.setValue("felipemauani", forKey: "loginUsuario")
+usuario.setValue("senha123", forKey: "senha")
+usuario.setValue("Felipe Manhani", forKey: "nome")
+usuario.setValue(40, forKey: "idade")
+
+do {
+    try context.save()
+    print("dados salvos")
+}catch{
+    print("error ao salvar dados")
+}
+
+let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Usuario")
+
+do{
+    let usuarios = try  context.fetch(request)
+    
+    if usuarios.count > 0{
+        
+        for usuario in usuarios {
+            
+            if let nomeUsuario = (usuario as AnyObject).value(forKey: "nome") {
+                print(nomeUsuario)
+            }
+        }
+    }else {
+        print("nenhum usuario")
+    }
+    
+}catch{
+    print("error ao recuperar os dados")
+}
+*/
 
