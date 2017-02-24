@@ -88,15 +88,13 @@ class ViewController: UIViewController {
         
         
         //Aplicar filtros
-        
-        //let predicate = NSPredicate(format: "nome = %@", "Super Nintendo")
+        let predicate = NSPredicate(format: "nome = %@", "Super Nintendo")
         
         //Sem case sensitve
         //let predicate = NSPredicate(format: "nome contains %@", "super")
         
         //Usando case sensitive
         //let predicate = NSPredicate(format: "nome contains [c] %@", "super")
-        
         
         //Começa com
         //let predicate = NSPredicate(format: "nome beginswith [c] %@", "super")
@@ -119,8 +117,7 @@ class ViewController: UIViewController {
         
         //Passa um array de filtros
         request.sortDescriptors = [orderAZ]
-        request.predicate = combinacaoFiltros//NSCompoundPredicate(andPredicateWithSubpredicates: [filtroNome, filtroPreco])
-        
+        request.predicate = predicate
         do{
             let produtos = try context.fetch(request)
             
@@ -132,6 +129,17 @@ class ViewController: UIViewController {
                     let precoProduto = (produto as AnyObject).value(forKey: "preco")
                     
                     print("Nome: " + String(describing: nomeProduto) + "Preco: " + String(describing: precoProduto))
+                    
+                    //Atualizar dados
+                   /* (produto as AnyObject).setValue(300.00, forKey: "preco")
+                    (produto as AnyObject).setValue("Super Nintendo", forKey: "nome")
+                    do{
+                        try context.save()
+                        print("sucesso ao atualizar dados")
+                    }catch{
+                        print("nao atualizou")
+                    }*/
+                    //fim atualizar dados
                 }
             }else {
                 print("nenhum item encontrado")
